@@ -4,4 +4,4 @@ mvn clean
 
 mvn package
 
-docker build -t sso-client .
+docker build -t docker.registry.cscloud.com/sso-client:1.0 .
