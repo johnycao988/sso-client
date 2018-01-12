@@ -52,7 +52,7 @@ public class Auth {
 
 	}
 
-	public static boolean checkSession(ServletRequest request, ServletResponse response)
+	public static boolean validateSession(ServletRequest request, ServletResponse response)
 			throws ServletException, IOException {
 
 		HttpServletRequest req = (HttpServletRequest) request;

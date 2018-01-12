@@ -40,7 +40,7 @@ public class SSOFilter implements Filter {
 
 		this.printCookies(req, res);
 
-		if (!Auth.checkSession(req, res))
+		if (!Auth.validateSession(req, res))
 			return;
 
 		chain.doFilter(req, res);
