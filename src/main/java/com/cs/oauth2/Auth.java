@@ -11,10 +11,9 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
- 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.CloseableHttpResponse; 
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -23,13 +22,12 @@ import org.apache.http.util.EntityUtils;
 
 public class Auth {
 
-	
 	private static String TOKEN_AUTH_URL = "";
 	private static String CLIENT_ID = "";
 	private static String CLIENT_REDIRECT_ROOT_URL = "";
 	private static String CLIENT_SECRET = "";
 	private static String TOKEN_REQ_URL = "";
-	
+
 	private static String AUTH_SERVER = init();
 
 	private static String init() {
@@ -54,25 +52,33 @@ public class Auth {
 
 	}
 
-	public static boolean needLogin(ServletRequest request, ServletResponse response)
+	public static boolean checkSession(ServletRequest request, ServletResponse response)
 			throws ServletException, IOException {
 
 		HttpServletRequest req = (HttpServletRequest) request;
-		HttpServletResponse res = (HttpServletResponse) response;
 
 		if (req.getSession(false) != null)
-			return false;
+			return true;
 		else
 			req.getSession(true);
+
+		forwardLoginPage(request, response);
+
+		return false;
+
+	}
+
+	public static void forwardLoginPage(ServletRequest request, ServletResponse response) throws ServletException, IOException {
+
+		HttpServletRequest req = (HttpServletRequest) request;
+		HttpServletResponse res = (HttpServletResponse) response;
 
 		String reqLoginUrl = AUTH_SERVER + TOKEN_AUTH_URL + "?client_id=" + CLIENT_ID
 				+ "&response_type=code&scope=openid&redirect_uri=" + CLIENT_REDIRECT_ROOT_URL + req.getRequestURI();
 
 		System.out.println(reqLoginUrl);
-		
-		res.sendRedirect(reqLoginUrl);
 
-		return true;
+		res.sendRedirect(reqLoginUrl);
 
 	}
 

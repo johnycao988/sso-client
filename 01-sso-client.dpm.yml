@@ -19,9 +19,17 @@ spec:
       hostNetwork: false
       nodeSelector:
         nodeRole: ms
+      volumes:
+        - name: hosts-file
+          hostPath:
+            path: /elk/hosts            
+        
       containers:
         - image: docker.registry.cscloud.com/sso-client:1.0
-          name: nexus
+          name: sso-client
+          volumeMounts:
+          - mountPath: "/etc/hosts"
+            name: "hosts-file"            
           ports:
             - containerPort: 3000 
 

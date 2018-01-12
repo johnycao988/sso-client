@@ -18,10 +18,10 @@ import com.cs.oauth2.Auth;
 public class SysRest {  
  
 	 
-	@RequestMapping(value = {"/","/index","/welcome"},method = RequestMethod.GET)
+	@RequestMapping(value = {"/","/index","/welcome","version","info"},method = RequestMethod.GET)
 	public String getVersion() {
 		
-		return "ss client - version v1.0";		
+		return "SSO Client - version v1.0";		
 	}
 	
  
