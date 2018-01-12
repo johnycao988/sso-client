@@ -42,7 +42,7 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: nexus
+  name: sso-client
   namespace: test
 spec:
   rules:
