@@ -4,3 +4,4 @@ fe00::0 ip6-localnet
 fe00::0 ip6-mcastprefix
 fe00::1 ip6-allnodes
 fe00::2 ip6-allrouters 
+192.168.3.101 sso.client.cscloud.com
