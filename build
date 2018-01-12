@@ -2,6 +2,8 @@
 
 git pull
 
+cp ./config.test.properties ./src/main/resources/config/config.properties
+
 mvn clean
 
 mvn package
