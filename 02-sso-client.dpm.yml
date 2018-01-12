@@ -19,18 +19,12 @@ spec:
       hostNetwork: false
       nodeSelector:
         nodeRole: ms
-      volumes:
-        - name: host-conf-file
-          configMap:
-            name: sso-client-configmap            
+          
         
       containers:
         - image: docker.registry.cscloud.com/sso-client:1.0
           name: sso-client
-          volumeMounts:
-          - mountPath: "/etc/hosts"
-            name: "host-conf-file"
-            subPath: hosts            
+       
           ports:
             - containerPort: 3000 
 
