@@ -3,6 +3,7 @@ package com.cs.oauth2;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -10,13 +11,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.http.Header;
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpResponse;
+ 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.CloseableHttpResponse; 
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -25,34 +23,55 @@ import org.apache.http.util.EntityUtils;
 
 public class Auth {
 
-	private static final Client client = new Client("sso.client.dev", "345bffd7-802b-46be-9def-2ae1386c6bc1");
-
-	private static final String AUTH_SERVER = "http://sso.cscloud.com";
-
-	private static final String TOKEN_REQ_URL = "/auth/realms/CSCloud/protocol/openid-connect/token";
-
-	private static final String TOKEN_AUTH_URL = "/auth/realms/CSCloud/protocol/openid-connect/auth";
 	
-	private static final String CLIENT_REDIRECT_ROOT_URL = "http://localhost:3000";
+	private static String TOKEN_AUTH_URL = "";
+	private static String CLIENT_ID = "";
+	private static String CLIENT_REDIRECT_ROOT_URL = "";
+	private static String CLIENT_SECRET = "";
+	private static String TOKEN_REQ_URL = "";
 	
+	private static String AUTH_SERVER = init();
 
-	public static boolean needLogin(ServletRequest request, ServletResponse response) throws ServletException, IOException {
-		
-		
+	private static String init() {
+
+		try {
+			Properties p = new Properties();
+
+			p.load(Auth.class.getResourceAsStream("/config/config.properties"));
+
+			AUTH_SERVER = p.getProperty("AUTH_SERVER");
+			TOKEN_AUTH_URL = p.getProperty("TOKEN_AUTH_URL");
+			CLIENT_ID = p.getProperty("CLIENT_ID");
+			CLIENT_REDIRECT_ROOT_URL = p.getProperty("CLIENT_REDIRECT_ROOT_URL");
+			CLIENT_SECRET = p.getProperty("CLIENT_SECRET");
+			TOKEN_REQ_URL = p.getProperty("TOKEN_REQ_URL");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return AUTH_SERVER;
+
+	}
+
+	public static boolean needLogin(ServletRequest request, ServletResponse response)
+			throws ServletException, IOException {
 
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 
-		if(req.getSession(false)!=null)
+		if (req.getSession(false) != null)
 			return false;
-		else req.getSession(true);	
-		
-		
-		String reqLoginUrl = AUTH_SERVER + TOKEN_AUTH_URL
-				+ "?client_id=sso.client.dev&response_type=code&scope=openid&redirect_uri="+CLIENT_REDIRECT_ROOT_URL+req.getRequestURI();
+		else
+			req.getSession(true);
 
-		res.sendRedirect(reqLoginUrl);
+		String reqLoginUrl = AUTH_SERVER + TOKEN_AUTH_URL + "?client_id=" + CLIENT_ID
+				+ "&response_type=code&scope=openid&redirect_uri=" + CLIENT_REDIRECT_ROOT_URL + req.getRequestURI();
+
+		System.out.println(reqLoginUrl);
 		
+		res.sendRedirect(reqLoginUrl);
+
 		return true;
 
 	}
@@ -66,8 +85,8 @@ public class Auth {
 		List<BasicNameValuePair> reqParams = new ArrayList<BasicNameValuePair>();
 
 		reqParams.add(new BasicNameValuePair("grant_type", "client_credentials"));
-		reqParams.add(new BasicNameValuePair("client_id", client.getId()));
-		reqParams.add(new BasicNameValuePair("client_secret", client.getSecret()));
+		reqParams.add(new BasicNameValuePair("client_id", CLIENT_ID));
+		reqParams.add(new BasicNameValuePair("client_secret", CLIENT_SECRET));
 
 		UrlEncodedFormEntity uefEntity;
 
