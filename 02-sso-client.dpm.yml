@@ -22,7 +22,7 @@ spec:
       volumes:
         - name: hosts-file
           hostPath:
-            path: /elk/hosts            
+            path: /etc/hosts            
         
       containers:
         - image: docker.registry.cscloud.com/sso-client:1.0
