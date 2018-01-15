@@ -28,7 +28,7 @@ spec:
         - image: docker.registry.cscloud.com/sso-client:1.0
           name: sso-client
           volumeMounts:
-            - mountPath: "/config"
+            - mountPath: "/config/auth.config.properties"
               name: "config"
               subPath: "auth.config.properties"
   
