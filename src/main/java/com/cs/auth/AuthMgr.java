@@ -12,10 +12,12 @@ public class AuthMgr {
 	}
 
 	public static void initServletFilter() throws AuthException {
-		
-		String confFile=System.getProperty("AUTH_CONFIG_FILE");
-		
-		if(confFile==null) throw new AuthException("AUTH_CONFIG_FILE is not set");
+
+		String confFile = System.getProperty("AUTH_CONFIG_FILE");
+
+		if (confFile == null) {
+			confFile = "/config/auth.config.properties";
+		}
 
 		try (FileInputStream inStream = new FileInputStream(confFile)) {
 
