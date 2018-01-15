@@ -52,9 +52,10 @@ public class KeycloakServletFilter extends AuthServletFilter {
 		HttpServletRequest req = (HttpServletRequest) request;
 
 		KeyCloakSession ks = (KeyCloakSession) req.getSession().getAttribute(KeyCloakSession.JSESSION_ID);
-
+	 
 		if (ks == null) {
-
+           
+			System.out.println("Keycloak session is null");
 			ks = new KeyCloakSession(req);
 
 		}

@@ -21,6 +21,12 @@ public class KeyCloakSession implements Serializable {
 		code = req.getParameter("code");
 		sessionState = req.getParameter("session_state");
 		jSessionId = getCookieSessionID(req);
+		
+		System.out.println("create Keycloak session ---");
+		
+		System.out.println("code:"+code);
+		System.out.println("sessionState:"+sessionState);
+		System.out.println("jSessionId:"+jSessionId);
 
 		if (jSessionId != null && code != null && sessionState != null)
 			req.getSession().setAttribute(JSESSION_ID, this);
