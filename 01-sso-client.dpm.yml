@@ -6,7 +6,7 @@ metadata:
   labels:
     k8s-app: sso-client
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       k8s-app: sso-client
