@@ -15,9 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.core.annotation.Order;
-import org.springframework.web.context.request.async.WebAsyncManager;
 
-import com.cs.oauth2.Auth;
+import com.cs.auth.AuthException;
+import com.cs.auth.AuthMgr;
 
 @Order(1)
 @WebFilter(filterName = "testFilter1", urlPatterns = "/*")
@@ -25,6 +25,8 @@ public class SSOFilter implements Filter {
 
 	@Override
 	public void destroy() {
+
+		AuthMgr.getServletFilter().destroy();
 
 	}
 
@@ -40,15 +42,23 @@ public class SSOFilter implements Filter {
 
 		this.printCookies(req, res);
 
-		if (!Auth.validateSession(req, res))
-			return;
+		this.printRequestParams(req, res);
 
-		chain.doFilter(req, res);
+		AuthMgr.getServletFilter().doFilter(req, res, chain);
 
 	}
 
 	@Override
-	public void init(FilterConfig arg0) throws ServletException {
+	public void init(FilterConfig filterConfig) throws ServletException {
+
+		try {
+			AuthMgr.initServletFilter();
+		} catch (AuthException e) {
+
+			e.printStackTrace();
+		}
+
+		AuthMgr.getServletFilter().init(filterConfig);
 
 	}
 
@@ -71,14 +81,27 @@ public class SSOFilter implements Filter {
 
 		while (eh.hasMoreElements()) {
 			String hn = eh.nextElement();
+
 			System.out.println(hn + ": " + req.getAttribute(hn));
 
 		}
 
-		WebAsyncManager wm = (WebAsyncManager) req
-				.getAttribute("org.springframework.web.context.request.async.WebAsyncManager.WEB_ASYNC_MANAGER");
+	}
 
-		System.out.println("wm:" + wm);
+	private void printRequestParams(ServletRequest request, ServletResponse response) {
+
+		System.out.println("Parameter Values:...........");
+		HttpServletRequest req = (HttpServletRequest) request;
+		Enumeration<String> eh = req.getParameterNames();
+
+		while (eh.hasMoreElements()) {
+			String pn = eh.nextElement();
+
+			String[] pvs = req.getParameterValues(pn);
+			for (String pv : pvs)
+				System.out.println(pn + ": " + pv);
+
+		}
 
 	}
 

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cs.oauth2.Auth; 
+import com.cs.auth.AuthMgr; 
  
 
 @Controller 
@@ -28,7 +28,7 @@ public class SysRest {
 	@RequestMapping("/token")
 	public String getToken() throws ClientProtocolException, IOException { 
 			
-		return Auth.getToken();
+		return "Token";
 		
 	} 
 	 

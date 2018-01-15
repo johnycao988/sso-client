@@ -3,5 +3,5 @@ VOLUME /tmp
 ADD ./target/sso-client.jar app.jar
 ENV SERVICE_NAME cloud-security-client
 ENV SERVICE_TAGS test
-EXPOSE 3080
+EXPOSE 3000
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]

@@ -19,12 +19,21 @@ spec:
       hostNetwork: false
       nodeSelector:
         nodeRole: ms
-          
+      volumes:
+        - name: config
+          configMap:
+            name: sso-client-configmap          
         
       containers:
         - image: docker.registry.cscloud.com/sso-client:1.0
           name: sso-client
-        
+          volumeMounts:
+            - mountPath: "/config"
+              name: "config"
+              subPath: "auth.config.properties"
+          env:
+            - name: AUTH_CONFIG_FILE
+              value: "/config/auth.config.properties"        
           ports:
             - containerPort: 3000 
 
