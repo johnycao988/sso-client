@@ -31,9 +31,8 @@ spec:
             - mountPath: "/config"
               name: "config"
               subPath: "auth.config.properties"
-          env:
-            - name: AUTH_CONFIG_FILE
-              value: "/config/auth.config.properties"        
+          args:
+            - AUTH_CONFIG_FILE=config/auth.config.properties        
           ports:
             - containerPort: 3000 
 
