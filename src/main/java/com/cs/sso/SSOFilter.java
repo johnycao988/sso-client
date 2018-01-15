@@ -34,7 +34,7 @@ public class SSOFilter implements Filter {
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
 			throws IOException, ServletException {
 
-		System.out.println("filter ...");
+		System.out.println("Start filter....");
 
 		this.printSessions(req, res);
 
@@ -67,7 +67,7 @@ public class SSOFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		Enumeration<String> eh = req.getHeaderNames();
 
-		System.out.println("Headers:...........");
+		System.out.println("Print Request Headers :...........");
 
 		while (eh.hasMoreElements()) {
 			String hn = eh.nextElement();
@@ -77,7 +77,7 @@ public class SSOFilter implements Filter {
 
 		eh = req.getAttributeNames();
 
-		System.out.println("Header Values:...........");
+		System.out.println("Print Header Attributes:...........");
 
 		while (eh.hasMoreElements()) {
 			String hn = eh.nextElement();
@@ -90,7 +90,7 @@ public class SSOFilter implements Filter {
 
 	private void printRequestParams(ServletRequest request, ServletResponse response) {
 
-		System.out.println("Parameter Values:...........");
+		System.out.println("Print Request Parameters:...........");
 		HttpServletRequest req = (HttpServletRequest) request;
 		Enumeration<String> eh = req.getParameterNames();
 
@@ -110,7 +110,7 @@ public class SSOFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		Cookie[] cs = req.getCookies();
 
-		System.out.println("Cookies:...........");
+		System.out.println("Print Request Cookies:...........");
 
 		if (cs != null)
 			for (Cookie c : cs) {
