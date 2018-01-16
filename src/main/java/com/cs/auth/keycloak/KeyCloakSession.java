@@ -24,8 +24,9 @@ public class KeyCloakSession implements Serializable {
 		System.out.println("code:" + code);
 		System.out.println("sessionState:" + sessionState);
 
-		if (code != null && sessionState != null)
-			req.getSession().setAttribute(KEY_CLOAK_SESSION, this);
+		if (code != null && sessionState != null){			
+			req.getSession().setAttribute(KEY_CLOAK_SESSION, this);			
+		}
 
 	}
 

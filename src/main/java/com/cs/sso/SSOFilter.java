@@ -34,15 +34,15 @@ public class SSOFilter implements Filter {
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
 			throws IOException, ServletException {
 
-		System.out.println("Start filter....");
+		//System.out.println("Start filter....");
 
-		this.printSessions(req, res);
+		//this.printSessions(req, res);
 
-		this.printHeaders(req, res);
+		//this.printHeaders(req, res);
 
-		this.printCookies(req, res);
+		//this.printCookies(req, res);
 
-		this.printRequestParams(req, res);
+	//	this.printRequestParams(req, res);
 
 		AuthMgr.getServletFilter().doFilter(req, res, chain);
 
