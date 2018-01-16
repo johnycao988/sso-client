@@ -38,9 +38,9 @@ public class SSOFilter implements Filter {
 
 		//this.printSessions(req, res);
 
-		//this.printHeaders(req, res);
+		this.printHeaders(req, res);
 
-		//this.printCookies(req, res);
+		this.printCookies(req, res);
 
 	//	this.printRequestParams(req, res);
 

@@ -50,20 +50,12 @@ public class KeycloakServletFilter extends AuthServletFilter {
 			throws ServletException, IOException {
 
 		HttpServletRequest req = (HttpServletRequest) request;
-		
-		System.out.println("Current session:"+req.getSession());
-
-		KeyCloakSession ks = KeyCloakSession.getKeyCloakSession(req);
+		HttpServletResponse res = (HttpServletResponse) response;
 	 
-		if (ks == null) {           
-			System.out.println("Keycloak session is null");
-			ks = new KeyCloakSession(req);
+		KeyCloakSession ks = new KeyCloakSession(req,res); 
+	 
 
-		}
-
-		if (ks.getCode() == null || ks.getSessionState() == null) {
-			
-			System.out.println("Forward keycloak login page");
+		if (ks.getCode() == null || ks.getSessionState() == null) { 
 			
 			forwardLoginPage(request, response);
 			return false;

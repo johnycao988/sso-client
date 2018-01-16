@@ -12,6 +12,8 @@ public class AuthMgr {
 	}
 
 	public static void initServletFilter() throws AuthException {
+		
+		//AuthSessionMgr.init(5*60);
 
 		String confFile = System.getProperty("AUTH_CONFIG_FILE");
 
@@ -33,6 +35,8 @@ public class AuthMgr {
 			servletFilter = (AuthServletFilter) Class.forName(oauth2FilterClass).newInstance();
 
 			servletFilter.initConfigProperties(p);
+			
+			
 
 		} catch (Exception e) {
 			throw new AuthException(e);
@@ -43,5 +47,14 @@ public class AuthMgr {
 	public static AuthServletFilter getServletFilter() {
 		return servletFilter;
 	}
+	
+	public static void destroy(){
+		if(servletFilter!=null)
+			servletFilter.destroy();
+		
+		///AuthSessionMgr.destroy();
+	}
+
+	
 
 }
