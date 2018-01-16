@@ -2,7 +2,6 @@ package com.cs.auth.keycloak;
 
 import java.io.Serializable;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 public class KeyCloakSession implements Serializable {
@@ -13,38 +12,26 @@ public class KeyCloakSession implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private final String code;
 	private final String sessionState;
-	private final String jSessionId;
-	public final static String JSESSION_ID = "JSESSIONID";
+	private static final String KEY_CLOAK_SESSION = "KEY_CLOAK_SESSION";
 
 	public KeyCloakSession(HttpServletRequest req) {
 
 		code = req.getParameter("code");
 		sessionState = req.getParameter("session_state");
-		jSessionId = getCookieSessionID(req);
-		
-		System.out.println("create Keycloak session ---");
-		
-		System.out.println("code:"+code);
-		System.out.println("sessionState:"+sessionState);
-		System.out.println("jSessionId:"+jSessionId);
 
-		if (jSessionId != null && code != null && sessionState != null)
-			req.getSession().setAttribute(JSESSION_ID, this);
+		System.out.println("create Keycloak session ---");
+
+		System.out.println("code:" + code);
+		System.out.println("sessionState:" + sessionState);
+
+		if (code != null && sessionState != null)
+			req.getSession().setAttribute(KEY_CLOAK_SESSION, this);
 
 	}
 
-	private String getCookieSessionID(HttpServletRequest req) {
+	public static KeyCloakSession getKeyCloakSession(HttpServletRequest req) {
 
-		Cookie[] cs = req.getCookies();
-
-		if (cs != null)
-			for (Cookie c : cs) {
-				if (c.getName().equals(JSESSION_ID))
-					return c.getValue();
-
-			}
-
-		return null;
+		return (KeyCloakSession) req.getSession().getAttribute(KEY_CLOAK_SESSION);
 
 	}
 
@@ -54,10 +41,6 @@ public class KeyCloakSession implements Serializable {
 
 	public String getSessionState() {
 		return sessionState;
-	}
-
-	public String getJSessionId() {
-		return jSessionId;
 	}
 
 }
