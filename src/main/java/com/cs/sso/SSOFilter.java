@@ -44,21 +44,16 @@ public class SSOFilter implements Filter {
 
 	//	this.printRequestParams(req, res);
 
-		AuthMgr.getServletFilter().doFilter(req, res, chain);
+		//AuthMgr.getServletFilter().doFilter(req, res, chain);
 
 	}
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 
-		try {
-			AuthMgr.initServletFilter();
-		} catch (AuthException e) {
-
-			e.printStackTrace();
-		}
-
-		AuthMgr.getServletFilter().init(filterConfig);
+	 	//AuthMgr.getServletFilter().init(filterConfig);
+		
+		AuthMgr.getServletFilter();
 
 	}
 

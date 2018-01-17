@@ -7,16 +7,15 @@ import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse; 
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponse; 
 
 import com.cs.auth.AuthException;
 import com.cs.auth.AuthServletFilter;
 
 public class KeycloakServletFilter extends AuthServletFilter {
 
-	private KeycloakConfigProperties configProperties;
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -26,6 +25,7 @@ public class KeycloakServletFilter extends AuthServletFilter {
 	@Override
 	public void destroy() {
 
+		
 	}
 
 	@Override
@@ -39,24 +39,16 @@ public class KeycloakServletFilter extends AuthServletFilter {
 
 	}
 
-	@Override
-	public void initConfigProperties(Properties configProp) throws AuthException {
-
-		configProperties = new KeycloakConfigProperties(configProp);
-
-	}
-
 	private boolean validateSession(ServletRequest request, ServletResponse response)
 			throws ServletException, IOException {
 
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
-	 
-		KeyCloakSession ks = new KeyCloakSession(req,res); 
-	 
 
-		if (ks.getCode() == null || ks.getSessionState() == null) { 
-			
+		KeyCloakSession ks = new KeyCloakSession(req, res);
+
+		if (ks.getCode() == null || ks.getSessionState() == null) {
+
 			forwardLoginPage(request, response);
 			return false;
 		}
@@ -71,7 +63,7 @@ public class KeycloakServletFilter extends AuthServletFilter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 
-		String reqLoginUrl = configProperties.getAuthServerRootUrl() + configProperties.getTokenAuthUrl()
+		String reqLoginUrl = configProperties.getAuthServerRootUrl() + configProperties.getAuthUrl()
 				+ "?client_id=" + configProperties.getClientId() + "&response_type=code&scope=openid&redirect_uri="
 				+ configProperties.getClientRedirectRootUrl() + req.getRequestURI();
 
@@ -80,6 +72,17 @@ public class KeycloakServletFilter extends AuthServletFilter {
 		res.sendRedirect(reqLoginUrl);
 
 	}
+
+	@Override
+	public String getPermissionToken() throws AuthException {
+		try {
+			return this.configProperties.getPermissionToken().getAccessToken();
+		} catch (Exception e) {
+			throw new AuthException(e);
+		}
+	}
+
+
 
 	/*
 	 * public static String getToken() throws ClientProtocolException,

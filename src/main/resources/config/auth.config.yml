@@ -1,0 +1,28 @@
+client:
+      id: sso.client.dev
+      secret: a7012ff7-9d4f-4dcb-8c4f-63f0261e0883
+      redirect.root.url: http://localhost:3000
+
+auth:
+  - id: SSO-CS-CLOUD
+    default: true;
+    name: "SSO CS Cloud"  
+    server.root.url: http://sso.cscloud.com
+    servlet.filter.class: com.cs.auth.keycloak.KeycloakServletFilter
+    auth.url: /auth/realms/CSCloud/protocol/openid-connect/auth
+    token.url: /auth/realms/CSCloud/protocol/openid-connect/token
+
+  - id: WEIXIN
+    name: "SSO Weixin"  
+    server.root.url: http://sso.weixin.com
+    servlet.filter.class: com.cs.auth.auth0.Auth0ServletFilter
+    auth.url: /auth/realms/CSCloud/protocol/openid-connect/auth
+    token.url: /auth/realms/CSCloud/protocol/openid-connect/token
+    
+  - id: WEIXIN1234
+    name: "SSO Weixin1234"  
+    server.root.url: http://sso.weixin123.com
+    servlet.filter.class: com.cs.auth.auth0.Auth0ServletFilter
+    auth.url: /auth/realms/CSCloud/protocol/openid-connect/auth
+    token.url: /auth/realms/CSCloud/protocol/openid-connect/token    
+

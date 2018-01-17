@@ -1,60 +1,48 @@
 package com.cs.auth;
 
-import java.io.FileInputStream;
-import java.util.Properties;
-
 public class AuthMgr {
 
-	private static AuthServletFilter servletFilter = null;
+	private static ClientAuthConfig authConf = init();
 
 	private AuthMgr() {
 
 	}
 
-	public static void initServletFilter() throws AuthException {
-		
-		//AuthSessionMgr.init(5*60);
+	private static ClientAuthConfig init() {
 
-		String confFile = System.getProperty("AUTH_CONFIG_FILE");
+		try {
+			String confFile = System.getProperty("AUTH_CONFIG_FILE");
 
-		if (confFile == null) {
-			confFile = "/config/auth.config.properties";
-		}
+			if (confFile == null) {
+				confFile = "/config/auth.config.yml";
+			}
 
-		try (FileInputStream inStream = new FileInputStream(confFile)) {
-
-			Properties p = new Properties();
-
-			p.load(inStream);
-
-			String oauth2FilterClass = p.getProperty("AUTH2.SERVLET.FILTER.CLASS");
-
-			if (oauth2FilterClass == null)
-				throw new AuthException("AUTH2.SERVLET.FILTER.CLASS is not set.");
-
-			servletFilter = (AuthServletFilter) Class.forName(oauth2FilterClass).newInstance();
-
-			servletFilter.initConfigProperties(p);
-			
-			
-
+			return new ClientAuthConfig(confFile);
 		} catch (Exception e) {
-			throw new AuthException(e);
+			e.printStackTrace();
 		}
+		return null;
 
+	}
+
+	public static AuthServletFilter getServletFilter(String authId) {
+		return authConf.getAuthServletFilter(authId);
 	}
 
 	public static AuthServletFilter getServletFilter() {
-		return servletFilter;
-	}
-	
-	public static void destroy(){
-		if(servletFilter!=null)
-			servletFilter.destroy();
-		
-		///AuthSessionMgr.destroy();
+		return authConf.getDefaultAuthServletFilter();
 	}
 
-	
+	public String getClientId() {
+		return authConf.getClientId();
+	}
+
+	public String getClientSecret() {
+		return authConf.getClientSecret();
+	}
+
+	public String getClientRootRedirectUrl() {
+		return authConf.getClientRootRedirectUrl();
+	}
 
 }
