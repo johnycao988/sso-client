@@ -110,9 +110,10 @@ class _AuthConfigImpl implements AuthProperties {
 	private String authUrl;
 	private String tokenUrl;
 	private boolean isDefault;
+	private YamlParser yp;
 
 	public _AuthConfigImpl(YamlParser yp) {
-
+		this.yp = yp;
 		this.id = yp.getStringValue("id");
 		this.name = yp.getStringValue("name");
 		this.serverRootUrl = yp.getStringValue("server.root.url");
@@ -157,6 +158,12 @@ class _AuthConfigImpl implements AuthProperties {
 	public boolean isDefault() {
 
 		return this.isDefault;
+	}
+
+	@Override
+	public String getProperty(String name) {
+
+		return yp.getStringValue(name);
 	}
 
 }

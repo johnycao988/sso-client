@@ -29,7 +29,7 @@ public class AuthMgr {
 		return authConf.getAuthServletFilter(authId);
 	}
 
-	public static AuthServletFilter getServletFilter() {
+	public static AuthServletFilter getDefaultAuthServletFilter() {
 		return authConf.getDefaultAuthServletFilter();
 	}
 

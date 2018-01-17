@@ -1,21 +1,16 @@
 package com.cs.auth.keycloak;
 
 import java.io.IOException;
-import java.util.Properties;
-
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse; 
-
-import com.cs.auth.AuthException;
+import javax.servlet.http.HttpServletResponse;
 import com.cs.auth.AuthServletFilter;
 
 public class KeycloakServletFilter extends AuthServletFilter {
-
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -25,7 +20,6 @@ public class KeycloakServletFilter extends AuthServletFilter {
 	@Override
 	public void destroy() {
 
-		
 	}
 
 	@Override
@@ -45,11 +39,10 @@ public class KeycloakServletFilter extends AuthServletFilter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 
-		KeyCloakSession ks = new KeyCloakSession(req, res);
+		KeycloakSession ks =KeycloakSession.getKeyCloakSession(req, res);
 
-		if (ks.getCode() == null || ks.getSessionState() == null) {
-
-			forwardLoginPage(request, response);
+		if (ks.isNeedLogin()) {
+			ks.forwardLoginPage(request, response);
 			return false;
 		}
 
@@ -57,33 +50,8 @@ public class KeycloakServletFilter extends AuthServletFilter {
 
 	}
 
-	private void forwardLoginPage(ServletRequest request, ServletResponse response)
-			throws ServletException, IOException {
-
-		HttpServletRequest req = (HttpServletRequest) request;
-		HttpServletResponse res = (HttpServletResponse) response;
-
-		String reqLoginUrl = configProperties.getAuthServerRootUrl() + configProperties.getAuthUrl()
-				+ "?client_id=" + configProperties.getClientId() + "&response_type=code&scope=openid&redirect_uri="
-				+ configProperties.getClientRedirectRootUrl() + req.getRequestURI();
-
-		System.out.println("****** req login url:" + reqLoginUrl);
-
-		res.sendRedirect(reqLoginUrl);
-
-	}
-
-	@Override
-	public String getPermissionToken() throws AuthException {
-		try {
-			return this.configProperties.getPermissionToken().getAccessToken();
-		} catch (Exception e) {
-			throw new AuthException(e);
-		}
-	}
-
-
-
+	
+ 
 	/*
 	 * public static String getToken() throws ClientProtocolException,
 	 * IOException {

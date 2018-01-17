@@ -15,8 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.core.annotation.Order;
-
-import com.cs.auth.AuthException;
 import com.cs.auth.AuthMgr;
 
 @Order(1)
@@ -26,7 +24,7 @@ public class SSOFilter implements Filter {
 	@Override
 	public void destroy() {
 
-		AuthMgr.getServletFilter().destroy();
+		AuthMgr.getDefaultAuthServletFilter().destroy();
 
 	}
 
@@ -34,26 +32,28 @@ public class SSOFilter implements Filter {
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
 			throws IOException, ServletException {
 
-		//System.out.println("Start filter....");
+		// System.out.println("Start filter....");
 
-		//this.printSessions(req, res);
+		// this.printSessions(req, res);
 
 		this.printHeaders(req, res);
 
 		this.printCookies(req, res);
 
-	//	this.printRequestParams(req, res);
+		// this.printRequestParams(req, res);
 
-		//AuthMgr.getServletFilter().doFilter(req, res, chain);
+		// AuthMgr.getServletFilter().doFilter(req, res, chain);
+
+		AuthMgr.getDefaultAuthServletFilter().doFilter(req, res, chain);
 
 	}
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 
-	 	//AuthMgr.getServletFilter().init(filterConfig);
-		
-		AuthMgr.getServletFilter();
+		// AuthMgr.getServletFilter().init(filterConfig);
+
+		AuthMgr.getDefaultAuthServletFilter().init(filterConfig);
 
 	}
 

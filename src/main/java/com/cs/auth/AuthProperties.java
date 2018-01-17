@@ -16,5 +16,6 @@ public interface AuthProperties {
 	
 	public boolean isDefault();
  
+	public String getProperty(String name);
 
 }
