@@ -1,6 +1,6 @@
-package com.cs.auth.keycloak; 
+package com.cs.auth.adapter.keycloak; 
  
-import com.cs.auth.Token;
+import com.cs.auth.base.Token;
  
 
 public class KeycloakToken implements Token {

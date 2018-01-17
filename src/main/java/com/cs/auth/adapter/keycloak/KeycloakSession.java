@@ -1,4 +1,4 @@
-package com.cs.auth.keycloak;
+package com.cs.auth.adapter.keycloak;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.cly.comm.client.http.HttpClient;
 import com.cly.comm.client.http.HttpRequestParam;
 import com.cly.comm.util.JSONUtil;
-import com.cs.auth.AuthMgr;
+import com.cs.auth.base.AuthMgr;
 
 import net.iharder.Base64;
 import net.sf.json.JSONObject;

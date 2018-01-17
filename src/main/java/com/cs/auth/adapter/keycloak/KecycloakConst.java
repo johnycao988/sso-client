@@ -1,4 +1,4 @@
-package com.cs.auth.keycloak;
+package com.cs.auth.adapter.keycloak;
 
 public class KecycloakConst {
 

@@ -1,4 +1,4 @@
-package com.cs.auth.keycloak;
+package com.cs.auth.adapter.keycloak;
 
 import java.io.IOException;
 import javax.servlet.FilterChain;
@@ -8,7 +8,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.cs.auth.AuthServletFilter;
+
+import com.cs.auth.base.AuthServletFilter;
 
 public class KeycloakServletFilter extends AuthServletFilter {
 

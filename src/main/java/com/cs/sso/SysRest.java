@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cly.comm.client.http.HttpClient;
 import com.cly.comm.client.http.HttpRequestParam;
 import com.cly.comm.util.JSONUtil;
-import com.cs.auth.AuthException;
-import com.cs.auth.AuthMgr;
-import com.cs.auth.keycloak.KeyCloakSession;
-import com.cs.auth.keycloak.KeycloakToken;
+import com.cs.auth.adapter.keycloak.KeycloakToken;
+import com.cs.auth.base.AuthException;
+import com.cs.auth.base.AuthMgr;
+import com.cs.auth.base.keycloak.KeyCloakSession;
 
 import net.iharder.Base64;
 import net.sf.json.JSONObject;

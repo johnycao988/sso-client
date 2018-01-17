@@ -1,4 +1,4 @@
-package com.cs.auth;
+package com.cs.auth.base;
 
 public class AuthException extends Exception {
 

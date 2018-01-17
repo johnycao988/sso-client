@@ -1,4 +1,4 @@
-package com.cs.auth;
+package com.cs.auth.base;
 
 import java.io.IOException;
 import javax.servlet.Filter;

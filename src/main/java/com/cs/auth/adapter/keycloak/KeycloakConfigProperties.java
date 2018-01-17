@@ -1,4 +1,4 @@
-package com.cs.auth.keycloak;
+package com.cs.auth.adapter.keycloak;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -7,7 +7,7 @@ import java.util.Properties;
 
 import com.cly.comm.client.http.HttpClient;
 import com.cly.comm.client.http.HttpRequestParam;
-import com.cs.auth.AuthException;
+import com.cs.auth.base.AuthException;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

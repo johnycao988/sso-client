@@ -15,7 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.core.annotation.Order;
-import com.cs.auth.AuthMgr;
+
+import com.cs.auth.base.AuthMgr;
 
 @Order(1)
 @WebFilter(filterName = "testFilter1", urlPatterns = "/*")

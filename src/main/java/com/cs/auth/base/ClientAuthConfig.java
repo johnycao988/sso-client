@@ -1,4 +1,4 @@
-package com.cs.auth;
+package com.cs.auth.base;
 
 import java.io.FileInputStream;
 import java.util.HashMap;
