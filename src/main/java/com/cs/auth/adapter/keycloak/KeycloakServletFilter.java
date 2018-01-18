@@ -30,10 +30,17 @@ public class KeycloakServletFilter extends AuthServletFilter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 
-		if (!validateSession(request, response))
-			return;
+		try {
 
-		chain.doFilter(request, response);
+			if (!validateSession(request, response))
+				return;
+
+			chain.doFilter(request, response);
+
+		} catch (Exception e) {
+			AuthLogger.error(e);
+			throw new ServletException(e);
+		}
 
 	}
 

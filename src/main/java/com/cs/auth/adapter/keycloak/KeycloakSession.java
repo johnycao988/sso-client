@@ -26,13 +26,36 @@ public class KeycloakSession extends AuthSession {
 
 		String sessionState = req.getParameter(KeycloakConst.SESSION_STATE);
 
+		Token uaToken = null;
+
 		if (code != null && sessionState != null) {
-			codeToToken(code, sessionState);
+
+			uaToken = codeToToken(code, sessionState);
+
+			if (uaToken != null) {
+				String sid = this.createAuthSessionId();
+				this.authProp.getKeyValueService().set(sid, uaToken.getJSONToken(), uaToken.refreshExpireInSeconds());
+				this.setAuthSessionId(sid);
+			}
+
 		} else {
+
+			String sid = this.getAuthSessionId();
+
+			String jsonUAToken = null;
+
+			if (sid != null)
+				jsonUAToken = this.authProp.getKeyValueService().get(sid);
+
+			if (jsonUAToken != null) {
+
+				uaToken = new KeycloakToken(jsonUAToken);
+
+			}
 
 		}
 
-		return null;
+		return uaToken;
 
 	}
 
@@ -52,16 +75,12 @@ public class KeycloakSession extends AuthSession {
 			hp.addHeader(KeycloakConst.REQ_HEADER_CONTENT_TYPE,
 					KeycloakConst.REQ_HEADER_VALUE_CONTENT_TYPE_FORM_URL_ENCODEED);
 			hp.addParam(KeycloakConst.REQ_HEADER_GRANT_TYPE, KeycloakConst.REQ_HEADER_VALUE_AUTHORIZATION_CODE);
-			hp.addParam(KeycloakConst.CLIENT_ID, this.authProp.getClientId());
-			hp.addParam(KeycloakConst.CLIENT_SECRET, this.authProp.getClientSecret());
 			hp.addParam(KeycloakConst.CODE, code);
 			hp.addParam(KeycloakConst.REDIRECT_URL, this.authProp.getClientRedirectRootUrl() + req.getRequestURI());
 
 			String reqUrl = this.authProp.getAuthServerRootUrl() + this.authProp.getTokenUri();
 
 			String sr = HttpClient.request(reqUrl, HttpClient.REQUEST_METHOD_POST, hp);
-
-			System.out.println(sr);
 
 			return new KeycloakToken(sr);
 
@@ -71,24 +90,25 @@ public class KeycloakSession extends AuthSession {
 	}
 
 	@Override
-	public void forwardLoginPage() throws ServletException, IOException {
+	public void forwardLoginPage() throws AuthException {
 
-		StringBuffer sb=new StringBuffer();
-		
-		sb.append(authProp.getAuthServerRootUrl())
-		.append(authProp.getAuthUri())
-		.append("?")
-		.append(KeycloakConst.CLIENT_ID)
-		.append("=")
-		.append(this.authProp.getClientId())
-		.append("&")
-		.append("response_type=code&scope=openid&redirect_uri=")
-	    .append(this.authProp.getClientRedirectRootUrl())
-	    .append(req.getRequestURI());
+		try {
+			StringBuffer sb = new StringBuffer();
 
-		System.out.println("****** req login url:" + sb.toString());
+			sb.append(authProp.getAuthServerRootUrl()).append(authProp.getAuthUri()).append("?")
+					.append(KeycloakConst.CLIENT_ID).append("=").append(this.authProp.getClientId()).append("&")
+					.append("response_type=code&scope=openid&redirect_uri=")
+					.append(this.authProp.getClientRedirectRootUrl()).append(req.getRequestURI());
 
-		res.sendRedirect(sb.toString());
+			res.sendRedirect(sb.toString());
+		} catch (Exception e) {
+			throw new AuthException(e);
+		}
+
+	}
+
+	@Override
+	public void refreshToken(Token token) throws AuthException {
 
 	}
 

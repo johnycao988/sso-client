@@ -1,5 +1,7 @@
 package com.cs.auth.base;
 
+import com.cly.cache.KeyValue;
+
 public interface AuthProperties {
 	
 	public String getAuthServerId();
@@ -24,5 +26,6 @@ public interface AuthProperties {
 	
 	public String getClientRedirectRootUrl();
 	
-
+	public KeyValue getKeyValueService();
+	
 }

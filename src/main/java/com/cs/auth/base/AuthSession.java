@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.cly.comm.client.http.HttpUtil;
+import com.cly.comm.util.IDUtil;
 
 public abstract class AuthSession implements Serializable {
 
@@ -26,18 +27,25 @@ public abstract class AuthSession implements Serializable {
 
 	public abstract Token getUserAuthencatedToken() throws AuthException;
 
-	
-	public abstract void forwardLoginPage()	throws ServletException, IOException;
-	
+	public abstract void forwardLoginPage() throws AuthException;
+
+	public abstract void refreshToken(Token token) throws AuthException; 
+
 	
 	public boolean needLogin() {
 
 		try {
+
 			Token userAuthToken = getUserAuthencatedToken();
 
-			if (userAuthToken != null)
+			if (userAuthToken == null)
+				return true;
+			else if (!userAuthToken.isExpired())
 				return false;
-			else
+			else if (!userAuthToken.isRefreshExpired()) {
+				this.refreshToken(userAuthToken);
+				return false;
+			} else
 				return true;
 		} catch (AuthException e) {
 			AuthLogger.error(e);
@@ -53,6 +61,10 @@ public abstract class AuthSession implements Serializable {
 
 		HttpUtil.setCookieValue(res, AUTH_SESSION_ID, sessId, -1);
 
+	}
+
+	public String createAuthSessionId() {
+		return IDUtil.getRandomBase64UUID();
 	}
 
 	public static AuthSession getAuthSession(HttpServletRequest req, HttpServletResponse res, Class<?> authClass,

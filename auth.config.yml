@@ -1,5 +1,5 @@
 client:
-  redirect.root.url: http://localhost:3000
+  redirect.root.url: http://sso.client.cscloud.com
 session.cache:
   type: redis
   server:
@@ -17,7 +17,7 @@ auth:
     client:
       id: sso.client.dev
       secret: a7012ff7-9d4f-4dcb-8c4f-63f0261e0883
-    default: true
+    default: false
     servlet.filter.class: com.cs.auth.adapter.keycloak.KeycloakServletFilter
 
   - server:
@@ -29,7 +29,7 @@ auth:
     client:
       id: sso.client.test
       secret: 67e1d85f-1f6d-4909-af2c-52b4e7664562
-    default: false
+    default: true
     servlet.filter.class: com.cs.auth.adapter.keycloak.KeycloakServletFilter    
 
  

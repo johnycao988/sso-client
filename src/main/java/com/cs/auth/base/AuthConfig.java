@@ -4,9 +4,7 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map.Entry;
-
-import javax.servlet.http.Cookie;
+import java.util.Map.Entry; 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.cly.cache.KVRedisService;
@@ -19,8 +17,6 @@ public class AuthConfig {
 	private HashMap<String, AuthServletFilter> hmAuthServletFilters;
 
 	private final String AUTH_SERVER_ID = "AUTH.SERVER.ID";
-
-	private KeyValue sessCache;
 
 	public AuthConfig(String confFile) {
 
@@ -40,7 +36,7 @@ public class AuthConfig {
 
 			for (YamlParser yp : yps) {
 
-				_AuthConfigImpl ac = new _AuthConfigImpl(yp, clientRedirectRootUrl);
+				_AuthConfigImpl ac = new _AuthConfigImpl(yp, clientRedirectRootUrl,initSessionCache(ypr));
 
 				AuthServletFilter asf = this.initAuthServletFilter(ac);
 
@@ -56,7 +52,9 @@ public class AuthConfig {
 
 	}
 
-	private void initSessionCache(YamlParser ypr) {
+	private KeyValue initSessionCache(YamlParser ypr) {
+
+		KeyValue kv = null;
 
 		String cacheType = ypr.getStringValue("session.cache.type");
 
@@ -68,13 +66,15 @@ public class AuthConfig {
 			int redisServerPort = ypr.getIntegerValue(rd + "port", -1);
 			String redisServerAuthPwd = ypr.getStringValue(rd + "authPassword");
 
-			KVRedisService kv = new KVRedisService();
+			KVRedisService kvs = new KVRedisService();
 
-			kv.init(redisServerUrl, redisServerPort, redisServerAuthPwd);
-
-			this.sessCache = kv;
+			kvs.init(redisServerUrl, redisServerPort, redisServerAuthPwd);
+			
+			kv=kvs;
 
 		}
+
+		return kv;
 
 	}
 
@@ -170,9 +170,11 @@ class _AuthConfigImpl implements AuthProperties {
 	private String clientId;
 	private String clientSecret;
 	private String clientRootRedirectUrl;
+	private KeyValue kv;
 
-	public _AuthConfigImpl(YamlParser yp, String clientRootRedirectUrl) {
+	public _AuthConfigImpl(YamlParser yp, String clientRootRedirectUrl, KeyValue kv) {
 
+		this.kv=kv;
 		this.clientRootRedirectUrl = clientRootRedirectUrl;
 		this.yp = yp;
 		this.authServerId = yp.getStringValue("server.id");
@@ -249,6 +251,11 @@ class _AuthConfigImpl implements AuthProperties {
 	@Override
 	public String getAuthProperty(String name) {
 		return yp.getStringValue(name);
+	}
+
+	@Override
+	public KeyValue getKeyValueService() {
+		return kv;
 	}
 
 }

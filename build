@@ -17,7 +17,7 @@ ansible -i ./ansible-hosts k8s-ms -m command -a 'docker rmi -f docker.registry.c
 
 kubectl delete configmap sso-client-configmap -n test
   
-kubectl create configmap sso-client-configmap --namespace=test --from-file=./auth.config.properties
+kubectl create configmap sso-client-configmap --namespace=test --from-file=./auth.config.yml
 
 kubectl delete -f ./01-sso-client.dpm.yml
 

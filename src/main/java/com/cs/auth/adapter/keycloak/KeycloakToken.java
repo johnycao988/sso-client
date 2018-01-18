@@ -1,6 +1,6 @@
 package com.cs.auth.adapter.keycloak; 
  
-import com.cly.comm.util.JSONUtil;
+import com.cly.comm.util.JSONUtil; 
 import com.cs.auth.base.Token;
 
 import net.sf.json.JSONObject;
@@ -21,7 +21,6 @@ public class KeycloakToken extends Token {
 	    this.sessionState=JSONUtil.getString(json, "session_state");
 	    this.tokenType=JSONUtil.getString(json, "token_type");
 	}
-
  
 	
 }
