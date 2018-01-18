@@ -49,37 +49,7 @@ public class KeycloakServletFilter extends AuthServletFilter {
 
 		return true;
 
-	}
-
-	
+	} 
  
-	/*
-	 * public static String getToken() throws ClientProtocolException,
-	 * IOException {
-	 * 
-	 * CloseableHttpClient hc = HttpClients.createDefault();
-	 * 
-	 * HttpPost httppost = new HttpPost(AUTH_SERVER + TOKEN_REQ_URL);
-	 * 
-	 * List<BasicNameValuePair> reqParams = new ArrayList<BasicNameValuePair>();
-	 * 
-	 * reqParams.add(new BasicNameValuePair("grant_type",
-	 * "client_credentials")); reqParams.add(new BasicNameValuePair("client_id",
-	 * CLIENT_ID)); reqParams.add(new BasicNameValuePair("client_secret",
-	 * CLIENT_SECRET));
-	 * 
-	 * UrlEncodedFormEntity uefEntity;
-	 * 
-	 * uefEntity = new UrlEncodedFormEntity(reqParams, "UTF-8");
-	 * httppost.setEntity(uefEntity); httppost.setHeader("Content-Type",
-	 * "application/x-www-form-urlencoded");
-	 * 
-	 * CloseableHttpResponse res = hc.execute(httppost);
-	 * 
-	 * return EntityUtils.toString(res.getEntity());
-	 * 
-	 * }
-	 * 
-	 */
 
 }

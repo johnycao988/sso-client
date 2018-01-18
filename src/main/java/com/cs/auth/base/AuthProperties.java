@@ -2,20 +2,27 @@ package com.cs.auth.base;
 
 public interface AuthProperties {
 	
-	public String getId();
+	public String getAuthServerId();
 	
-	public String getName();
+	public String getAuthServerName();
 	
-	public String getServerRootUrl();
+	public String getAuthServerRootUrl();
 	
-	public String getServletFilterClassName();
+	public String getAuthServletFilterClassName();
 	
-	public String getAuthUrl();
+	public String getAuthUri();
 	
-	public String getTokenUrl();
+	public String getTokenUri();
 	
-	public boolean isDefault();
+	public boolean isDefaultAuthServer();
  
-	public String getProperty(String name);
+	public String getAuthProperty(String name);
+	
+	public String getClientId();
+	
+	public String getClientSecret();
+	
+	public String getClientRedirectRootUrl();
+	
 
 }

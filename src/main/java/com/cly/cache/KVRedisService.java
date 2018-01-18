@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 import redis.clients.jedis.Jedis;
 
 public class KVRedisService implements KeyValue {
-	
+
 	private Jedis jedis;
 
 	private final static String REDIS_SERVER_URL = "com.cly.kv.redis.server.ip";
@@ -23,7 +23,7 @@ public class KVRedisService implements KeyValue {
 	@Override
 	public void set(String key, String value) {
 
-		jedis.set(key, value);		
+		jedis.set(key, value);
 	}
 
 	@Override
@@ -40,8 +40,19 @@ public class KVRedisService implements KeyValue {
 
 	@Override
 	public void delete(String key) {
-		
+
 		jedis.del(key);
+	}
+
+	public void init(String serverUrl, int serverPort, String authPass) {
+
+		if (jedis != null)
+			return;
+
+		jedis = new Jedis(serverUrl, serverPort);
+		
+		jedis.auth(authPass);
+
 	}
 
 	@Override
@@ -76,9 +87,9 @@ public class KVRedisService implements KeyValue {
 
 	@Override
 	public void set(String key, String value, int expireSeconds) {
-		
+
 		this.set(key, value);
-		
+
 		this.setExpire(key, expireSeconds);
 
 	}
