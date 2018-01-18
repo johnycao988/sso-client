@@ -22,9 +22,9 @@ public class KeycloakSession extends AuthSession {
 	@Override
 	public Token getUserAuthencatedToken() throws AuthException {
 
-		String code = req.getParameter(KecycloakConst.CODE);
+		String code = req.getParameter(KeycloakConst.CODE);
 
-		String sessionState = req.getParameter(KecycloakConst.SESSION_STATE);
+		String sessionState = req.getParameter(KeycloakConst.SESSION_STATE);
 
 		if (code != null && sessionState != null) {
 			codeToToken(code, sessionState);
@@ -47,15 +47,15 @@ public class KeycloakSession extends AuthSession {
 
 			HttpRequestParam hp = new HttpRequestParam();
 
-			hp.addHeader(KecycloakConst.REQ_HEADER_AUTHORIZATION,
-					KecycloakConst.REQ_HEADER_VALUE_BAISC + getClientBasicToken());
-			hp.addHeader(KecycloakConst.REQ_HEADER_CONTENT_TYPE,
-					KecycloakConst.REQ_HEADER_VALUE_CONTENT_TYPE_FORM_URL_ENCODEED);
-			hp.addParam(KecycloakConst.REQ_HEADER_GRANT_TYPE, KecycloakConst.REQ_HEADER_VALUE_AUTHORIZATION_CODE);
-			hp.addParam(KecycloakConst.CLIENT_ID, this.authProp.getClientId());
-			hp.addParam(KecycloakConst.CLIENT_SECRET, this.authProp.getClientSecret());
-			hp.addParam(KecycloakConst.CODE, code);
-			hp.addParam(KecycloakConst.REDIRECT_URL, this.authProp.getClientRedirectRootUrl() + req.getRequestURI());
+			hp.addHeader(KeycloakConst.REQ_HEADER_AUTHORIZATION,
+					KeycloakConst.REQ_HEADER_VALUE_BAISC + getClientBasicToken());
+			hp.addHeader(KeycloakConst.REQ_HEADER_CONTENT_TYPE,
+					KeycloakConst.REQ_HEADER_VALUE_CONTENT_TYPE_FORM_URL_ENCODEED);
+			hp.addParam(KeycloakConst.REQ_HEADER_GRANT_TYPE, KeycloakConst.REQ_HEADER_VALUE_AUTHORIZATION_CODE);
+			hp.addParam(KeycloakConst.CLIENT_ID, this.authProp.getClientId());
+			hp.addParam(KeycloakConst.CLIENT_SECRET, this.authProp.getClientSecret());
+			hp.addParam(KeycloakConst.CODE, code);
+			hp.addParam(KeycloakConst.REDIRECT_URL, this.authProp.getClientRedirectRootUrl() + req.getRequestURI());
 
 			String reqUrl = this.authProp.getAuthServerRootUrl() + this.authProp.getTokenUri();
 
@@ -78,6 +78,8 @@ public class KeycloakSession extends AuthSession {
 		sb.append(authProp.getAuthServerRootUrl())
 		.append(authProp.getAuthUri())
 		.append("?")
+		.append(KeycloakConst.CLIENT_ID)
+		.append("=")
 		.append(this.authProp.getClientId())
 		.append("&")
 		.append("response_type=code&scope=openid&redirect_uri=")

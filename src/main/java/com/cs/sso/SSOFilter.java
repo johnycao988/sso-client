@@ -36,7 +36,7 @@ public class SSOFilter implements Filter {
 
 		HttpServletRequest req = (HttpServletRequest) request;
 
-		HttpServletResponse res = (HttpServletResponse) request;
+		HttpServletResponse res = (HttpServletResponse) response;
 		// System.out.println("Start filter....");
 
 		// this.printSessions(req, res);

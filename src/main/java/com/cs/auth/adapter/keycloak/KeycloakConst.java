@@ -1,6 +1,6 @@
 package com.cs.auth.adapter.keycloak;
 
-public class KecycloakConst {
+public class KeycloakConst {
 
 	public static final String CLIENT_ID="client_id";
 	public static final String CLIENT_SECRET="client_secret";
