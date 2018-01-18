@@ -16,7 +16,7 @@ public class KeycloakToken implements Token {
 	private String sessionState;
  
 
-	public KeycloakToken() {
+	public KeycloakToken(String jsonToken) {
 
 	 
 

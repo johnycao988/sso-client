@@ -2,10 +2,10 @@ client:
   redirect.root.url: http://localhost:3000
 session.cache:
   type: redis
-  reids:
-    server:
+  server:
+    redis:
       url: 192.168.3.103
-      port: 6379
+      port: 30379
       authPassword: redis  
 auth:
   - server:

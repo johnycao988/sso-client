@@ -177,9 +177,6 @@ public class YamlParser {
 		for (int i = 0; i < al.size(); i++) {
 			HashMap<String, Object> hma = new HashMap<String, Object>();
 			parseMap(hma, (LinkedHashMap<String, Object>) al.get(i), null);
-			
-			System.out.println("Put Auth Properties:"+hma);
-			
 			hm.put(String.valueOf(i), hma);
 		}
 	}

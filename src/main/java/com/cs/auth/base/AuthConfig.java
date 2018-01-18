@@ -18,11 +18,11 @@ public class AuthConfig {
 
 	private HashMap<String, AuthServletFilter> hmAuthServletFilters;
 
-	private final String AUTH_SERVER_ID = "AUTH.SERVER.ID"; 
+	private final String AUTH_SERVER_ID = "AUTH.SERVER.ID";
 
 	private KeyValue sessCache;
 
-	public AuthConfig(String confFile) throws AuthException {
+	public AuthConfig(String confFile) {
 
 		hmAuthServletFilters = new HashMap<String, AuthServletFilter>();
 
@@ -51,7 +51,7 @@ public class AuthConfig {
 			}
 
 		} catch (Exception e) {
-			throw new AuthException(e);
+			AuthLogger.error(e);
 		}
 
 	}
@@ -62,9 +62,11 @@ public class AuthConfig {
 
 		if (cacheType != null && cacheType.equalsIgnoreCase("redis")) {
 
-			String redisServerUrl = ypr.getStringValue("session.cache.redis.server.url");
-			int redisServerPort = ypr.getIntegerValue("session.cache.redis.server.port", -1);
-			String redisServerAuthPwd = ypr.getStringValue("session.cache.redis.server.authPassword");
+			String rd = "session.cache.server.redis.";
+
+			String redisServerUrl = ypr.getStringValue(rd + "url");
+			int redisServerPort = ypr.getIntegerValue(rd + "port", -1);
+			String redisServerAuthPwd = ypr.getStringValue(rd + "authPassword");
 
 			KVRedisService kv = new KVRedisService();
 

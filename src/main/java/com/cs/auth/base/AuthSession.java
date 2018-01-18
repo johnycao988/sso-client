@@ -1,7 +1,9 @@
 package com.cs.auth.base;
 
+import java.io.IOException;
 import java.io.Serializable;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -22,16 +24,25 @@ public abstract class AuthSession implements Serializable {
 
 	protected AuthProperties authProp;
 
-	public abstract Token getUserAuthencatedToken();
+	public abstract Token getUserAuthencatedToken() throws AuthException;
 
+	
+	public abstract void forwardLoginPage()	throws ServletException, IOException;
+	
+	
 	public boolean needLogin() {
 
-		Token userAuthToken = getUserAuthencatedToken();
+		try {
+			Token userAuthToken = getUserAuthencatedToken();
 
-		if (userAuthToken != null)
+			if (userAuthToken != null)
+				return false;
+			else
+				return true;
+		} catch (AuthException e) {
+			AuthLogger.error(e);
 			return false;
-		else
-			return true;
+		}
 	}
 
 	public String getAuthSessionId() {
@@ -44,13 +55,13 @@ public abstract class AuthSession implements Serializable {
 
 	}
 
-	public static AuthSession getAuthSession(HttpServletRequest req, HttpServletResponse res,
-			String authSessionClassName, AuthProperties ap) throws AuthException {
+	public static AuthSession getAuthSession(HttpServletRequest req, HttpServletResponse res, Class<?> authClass,
+			AuthProperties ap) throws AuthException {
 
 		AuthSession as = (AuthSession) req.getAttribute(AUTH_SESSION_NAME);
 
 		if (as == null) {
-			as = createAuthSession(authSessionClassName);
+			as = createAuthSession(authClass);
 			req.setAttribute(AUTH_SESSION_NAME, as);
 			as.req = req;
 			as.res = res;
@@ -59,10 +70,10 @@ public abstract class AuthSession implements Serializable {
 		return as;
 	}
 
-	private static AuthSession createAuthSession(String authSessionClassName) throws AuthException {
+	private static AuthSession createAuthSession(Class<?> authClass) throws AuthException {
 
 		try {
-			return (AuthSession) Class.forName(authSessionClassName).newInstance();
+			return (AuthSession) authClass.newInstance();
 
 		} catch (Exception e) {
 			throw new AuthException(e);

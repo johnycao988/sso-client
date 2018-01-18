@@ -9,7 +9,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.cs.auth.base.AuthException;
+import com.cs.auth.base.AuthLogger;
 import com.cs.auth.base.AuthServletFilter;
+import com.cs.auth.base.AuthSession;
 
 public class KeycloakServletFilter extends AuthServletFilter {
 
@@ -40,16 +43,20 @@ public class KeycloakServletFilter extends AuthServletFilter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 
-		KeycloakSession ks =KeycloakSession.getKeyCloakSession(req, res);
+		try {
+			AuthSession as = AuthSession.getAuthSession(req, res, KeycloakSession.class, this.authProp);
 
-		if (ks.isNeedLogin()) {
-			ks.forwardLoginPage(request, response);
+			if (as.needLogin()) {
+				as.forwardLoginPage();
+				return false;
+			}
+
+			return true;
+		} catch (AuthException e) {
+			AuthLogger.error(e);
 			return false;
 		}
 
-		return true;
-
-	} 
- 
+	}
 
 }
