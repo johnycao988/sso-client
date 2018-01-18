@@ -11,15 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.cly.cache.KVRedisService;
 import com.cly.cache.KeyValue;
+import com.cly.comm.client.http.HttpUtil;
 import com.cly.comm.util.YamlParser;
 
 public class AuthConfig {
 
 	private HashMap<String, AuthServletFilter> hmAuthServletFilters;
 
-	private final String AUTH_SERVER_ID = "AUTH.SERVER.ID";
-
-	private final String AUTH_SESSION_ID = "AUTH.SESSION.ID";
+	private final String AUTH_SERVER_ID = "AUTH.SERVER.ID"; 
 
 	private KeyValue sessCache;
 
@@ -96,7 +95,7 @@ public class AuthConfig {
 
 	public AuthServletFilter getAuthServletFilter(HttpServletRequest req, HttpServletResponse res) {
 
-		String authServerId = getCookieValue(req, AUTH_SERVER_ID);
+		String authServerId = HttpUtil.getCookieValue(req, AUTH_SERVER_ID);
 
 		AuthServletFilter asf;
 
@@ -111,7 +110,7 @@ public class AuthConfig {
 			}
 
 			if (asf != null) {
-				this.setCookieValue(res, AUTH_SERVER_ID, asf.getAuthProperties().getAuthServerId(), -1);
+				HttpUtil.setCookieValue(res, AUTH_SERVER_ID, asf.getAuthProperties().getAuthServerId(), -1);
 			}
 
 			return asf;
@@ -152,32 +151,6 @@ public class AuthConfig {
 		}
 
 		return al.toArray(new AuthServletFilter[0]);
-	}
-
-	private String getCookieValue(HttpServletRequest req, String cookieName) {
-
-		Cookie[] css = req.getCookies();
-
-		if (css != null)
-			for (Cookie c : css) {
-				String cn = c.getName();
-				if (cn.equals(cookieName)) {
-					return c.getValue();
-				}
-			}
-
-		return null;
-
-	}
-
-	private void setCookieValue(HttpServletResponse res, String cookieName, String cookieValue, int expiry) {
-
-		Cookie cookie = new Cookie(cookieName, cookieValue);
-
-		cookie.setMaxAge(expiry);
-
-		res.addCookie(cookie);
-
 	}
 
 }

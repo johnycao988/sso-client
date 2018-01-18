@@ -110,6 +110,8 @@ public class HttpClient {
 
 	}
 
+	
+	
 	/**
 	 * 
 	 * public static String doHttpsPost(String strUrl, ReqParam rp) throws

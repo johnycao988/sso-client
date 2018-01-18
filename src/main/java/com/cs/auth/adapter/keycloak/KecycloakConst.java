@@ -9,7 +9,7 @@ public class KecycloakConst {
 	public static final String REDIRECT_URL="redirect_uri";
 	
 	
-	public static final String KEYCLOAK_SESSION_NAME="KEYCLOAK_SESSION_NAME"; 
+	
 	public static final String KEYCLOAK_COOKIES_SESSION_DATA="KEYCLOAK_COOKIES_SESSION_DATA";  
 	
 	public static final String REQ_HEADER_AUTHORIZATION="Authorization";
