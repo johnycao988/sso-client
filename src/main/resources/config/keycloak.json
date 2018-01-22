@@ -1,6 +1,6 @@
 {
   "realm": "CSCloud",
-  "auth-server-url": "http://sso.cscloud.com/auth",
+  "auth-server-url": "http://192.168.3.103:30008/auth",
   "ssl-required": "external",
   "resource": "sso.client.dev",
   "credentials": {
