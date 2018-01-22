@@ -1,10 +1,10 @@
 {
   "realm": "CSCloud",
-  "auth-server-url": "http://sso.cscloud.com/auth",
+  "auth-server-url": "http://keycloak/auth",
   "ssl-required": "external",
-  "resource": "sso.client.dev",
+  "resource": "sso.client.test",
   "credentials": {
-    "secret": "a7012ff7-9d4f-4dcb-8c4f-63f0261e0883"
+    "secret": "67e1d85f-1f6d-4909-af2c-52b4e7664562"
   },
   "confidential-port": 0,
   "policy-enforcer": {}
