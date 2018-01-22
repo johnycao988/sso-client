@@ -28,9 +28,9 @@ spec:
         - image: docker.registry.cscloud.com/sso-client:1.0
           name: sso-client
           volumeMounts:
-            - mountPath: "/config/auth.config.yml"
+            - mountPath: "/config/keycloak.json"
               name: "config"
-              subPath: "auth.config.yml"
+              subPath: "keycloak.json"
   
           ports:
             - containerPort: 3000 
