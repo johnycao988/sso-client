@@ -51,7 +51,8 @@ public class KeycloakServletFilter extends AuthServletFilter {
 		HttpServletResponse res = (HttpServletResponse) response;
 
 		try {
-			AuthSession as = AuthSession.getAuthSession(req, res, KeycloakSession.class, this.authProp);
+			
+			AuthSession as = AuthSession.getAuthSession(req, res, this);
 
 			if (as.needLogin()) {
 				as.forwardLoginPage();
@@ -64,6 +65,11 @@ public class KeycloakServletFilter extends AuthServletFilter {
 			return false;
 		}
 
+	}
+
+	@Override
+	public Class<?> getAuthSessionClass() {
+		return KeycloakSession.class;
 	}
 
 }

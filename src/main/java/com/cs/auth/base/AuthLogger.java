@@ -11,5 +11,10 @@ public class AuthLogger {
 	public static void error(Exception e){
 		e.printStackTrace();		
 	}
+	
+	public static void debug(Object msg){
+		System.out.println(msg);		
+	}
+
 
 }

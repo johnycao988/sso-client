@@ -171,6 +171,7 @@ class _AuthConfigImpl implements AuthProperties {
 	private String clientSecret;
 	private String clientRootRedirectUrl;
 	private KeyValue kv;
+	private Token clientPermissionToken;
 
 	public _AuthConfigImpl(YamlParser yp, String clientRootRedirectUrl, KeyValue kv) {
 
@@ -256,6 +257,18 @@ class _AuthConfigImpl implements AuthProperties {
 	@Override
 	public KeyValue getKeyValueService() {
 		return kv;
+	}
+
+	@Override
+	public Token getClientPermissionToken() {
+		 
+		return clientPermissionToken;
+	}
+
+	@Override
+	public void setClientPermissionToken(Token clientPermToken) {
+
+        this.clientPermissionToken=clientPermToken;		
 	}
 
 }

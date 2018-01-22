@@ -1,9 +1,6 @@
 package com.cs.auth.base;
-
-import java.io.IOException;
-import java.io.Serializable;
-
-import javax.servlet.ServletException;
+ 
+import java.io.Serializable; 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -27,9 +24,11 @@ public abstract class AuthSession implements Serializable {
 
 	public abstract Token getUserAuthencatedToken() throws AuthException;
 
+	public abstract Token getClientPermissionToken() throws AuthException;
+	
 	public abstract void forwardLoginPage() throws AuthException;
 
-	public abstract void refreshToken(Token token) throws AuthException; 
+	public abstract Token refreshToken(Token token) throws AuthException; 
 
 	
 	public boolean needLogin() {
@@ -43,7 +42,7 @@ public abstract class AuthSession implements Serializable {
 			else if (!userAuthToken.isExpired())
 				return false;
 			else if (!userAuthToken.isRefreshExpired()) {
-				this.refreshToken(userAuthToken);
+				userAuthToken=this.refreshToken(userAuthToken);
 				return false;
 			} else
 				return true;
@@ -67,17 +66,16 @@ public abstract class AuthSession implements Serializable {
 		return IDUtil.getRandomBase64UUID();
 	}
 
-	public static AuthSession getAuthSession(HttpServletRequest req, HttpServletResponse res, Class<?> authClass,
-			AuthProperties ap) throws AuthException {
+	public static AuthSession getAuthSession(HttpServletRequest req, HttpServletResponse res, AuthServletFilter asf ) throws AuthException {
 
 		AuthSession as = (AuthSession) req.getAttribute(AUTH_SESSION_NAME);
 
 		if (as == null) {
-			as = createAuthSession(authClass);
+			as = createAuthSession(asf.getAuthSessionClass());
 			req.setAttribute(AUTH_SESSION_NAME, as);
 			as.req = req;
 			as.res = res;
-			as.authProp = ap;
+			as.authProp = asf.getAuthProperties();
 		}
 		return as;
 	}

@@ -17,6 +17,7 @@ public class KeycloakConst {
 	public static final String REQ_HEADER_GRANT_TYPE="grant_type";
 	
 	public static final String REQ_HEADER_VALUE_AUTHORIZATION_CODE="authorization_code";
+	public static final String REQ_HEADER_VALUE_CLIENT_CREDENTIALS="client_credentials";
 	public static final String REQ_HEADER_VALUE_BAISC=" Basic ";
 	public static final String REQ_HEADER_VALUE_BEARER=" Bearer ";
 	public static final String REQ_HEADER_VALUE_CONTENT_TYPE_FORM_URL_ENCODEED="application/x-www-form-urlencoded";

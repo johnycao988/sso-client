@@ -1,0 +1,11 @@
+{
+  "realm": "CSCloud",
+  "auth-server-url": "http://sso.cscloud.com/auth",
+  "ssl-required": "external",
+  "resource": "sso.client.test",
+  "credentials": {
+    "secret": "67e1d85f-1f6d-4909-af2c-52b4e7664562"
+  },
+  "confidential-port": 0,
+  "policy-enforcer": {}
+}

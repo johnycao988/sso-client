@@ -27,5 +27,7 @@ public abstract class AuthServletFilter implements Filter {
 			throws IOException, ServletException;
 
 	public abstract void destroy();
+	
+	public abstract Class<?> getAuthSessionClass();
 
 }

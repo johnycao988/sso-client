@@ -9,6 +9,7 @@ import com.cly.comm.client.http.HttpRequestParam;
 import com.cly.comm.util.IDUtil;
 
 import com.cs.auth.base.AuthException;
+import com.cs.auth.base.AuthLogger;
 import com.cs.auth.base.AuthSession;
 import com.cs.auth.base.Token;
 
@@ -30,7 +31,7 @@ public class KeycloakSession extends AuthSession {
 
 		if (code != null && sessionState != null) {
 
-			uaToken = codeToToken(code, sessionState);
+			uaToken = codeToUserAuthentcatedToken(code, sessionState);
 
 			if (uaToken != null) {
 				String sid = this.createAuthSessionId();
@@ -64,7 +65,7 @@ public class KeycloakSession extends AuthSession {
 		return IDUtil.Base64Encode(this.authProp.getClientId() + ":" + this.authProp.getClientSecret());
 	}
 
-	private Token codeToToken(String code, String sessionState) throws AuthException {
+	private Token codeToUserAuthentcatedToken(String code, String sessionState) throws AuthException {
 
 		try {
 
@@ -78,9 +79,11 @@ public class KeycloakSession extends AuthSession {
 			hp.addParam(KeycloakConst.CODE, code);
 			hp.addParam(KeycloakConst.REDIRECT_URL, this.authProp.getClientRedirectRootUrl() + req.getRequestURI());
 
-			String reqUrl = this.authProp.getAuthServerRootUrl() + this.authProp.getTokenUri();
+			String reqUrl = this.authProp.getAuthServerRootUrl() + this.authProp.getTokenUri(); 
 
 			String sr = HttpClient.request(reqUrl, HttpClient.REQUEST_METHOD_POST, hp);
+			
+			AuthLogger.debug("Get User Authenicated Token:\r\n"+sr);
 
 			return new KeycloakToken(sr);
 
@@ -108,8 +111,48 @@ public class KeycloakSession extends AuthSession {
 	}
 
 	@Override
-	public void refreshToken(Token token) throws AuthException {
+	public Token getClientPermissionToken() throws AuthException {
 
+		try {
+
+			Token clientPermToken = this.authProp.getClientPermissionToken();
+
+			if (clientPermToken != null) {
+				if (!clientPermToken.isExpired())
+					return clientPermToken;
+				else if (!clientPermToken.isRefreshExpired()) {
+					clientPermToken = this.refreshToken(clientPermToken);
+					return clientPermToken;
+				}
+			}
+
+			HttpRequestParam hp = new HttpRequestParam();
+
+	 		hp.addHeader(KeycloakConst.REQ_HEADER_CONTENT_TYPE,
+					KeycloakConst.REQ_HEADER_VALUE_CONTENT_TYPE_FORM_URL_ENCODEED);
+			
+			hp.addParam(KeycloakConst.REQ_HEADER_GRANT_TYPE, KeycloakConst.REQ_HEADER_VALUE_CLIENT_CREDENTIALS);
+			hp.addParam(KeycloakConst.CLIENT_ID, this.authProp.getClientId());
+			hp.addParam(KeycloakConst.CLIENT_SECRET, this.authProp.getClientSecret());
+
+			String reqUrl = this.authProp.getAuthServerRootUrl() + this.authProp.getTokenUri();
+ 
+
+			String sr = HttpClient.request(reqUrl, HttpClient.REQUEST_METHOD_POST, hp);
+
+			AuthLogger.debug("Get client permission Token:\r\n"+sr);
+			
+			return new KeycloakToken(sr);
+
+		} catch (Exception e) {
+			throw new AuthException(e);
+		}
+	}
+
+	@Override
+	public Token refreshToken(Token token) throws AuthException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

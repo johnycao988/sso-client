@@ -28,4 +28,9 @@ public interface AuthProperties {
 	
 	public KeyValue getKeyValueService();
 	
+	public Token getClientPermissionToken();
+	
+	public void setClientPermissionToken(Token clientPermToken);
+	
+	
 }

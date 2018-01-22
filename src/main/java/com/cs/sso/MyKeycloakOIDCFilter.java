@@ -27,7 +27,6 @@ import org.keycloak.adapters.NodesRegistrationManagement;
 import org.keycloak.adapters.PreAuthActionsHandler;
 import org.keycloak.adapters.spi.AuthChallenge;
 import org.keycloak.adapters.spi.AuthOutcome;
-import org.keycloak.adapters.spi.HttpFacade;
 import org.keycloak.adapters.spi.InMemorySessionIdMapper;
 import org.keycloak.adapters.spi.SessionIdMapper;
 import org.keycloak.adapters.spi.UserSessionManagement;
@@ -70,7 +69,7 @@ public class MyKeycloakOIDCFilter implements Filter {
 
 	public static final String CONFIG_RESOLVER_PARAM = "keycloak.config.resolver";
 
-	public static final String CONFIG_FILE_PARAM = "keycloak.config.file";
+	public static final String CONFIG_FILE_PARAM = "KEYCLOAK-CONFIG-FILE";
 
 	public static final String CONFIG_PATH_PARAM = "keycloak.config.path";
 
@@ -85,8 +84,9 @@ public class MyKeycloakOIDCFilter implements Filter {
 	private final KeycloakConfigResolver definedconfigResolver;
 
 	/**
-	 * Constructor that can be used to define a {@code KeycloakConfigResolver} that
-	 * will be used at initialization to provide the {@code KeycloakDeployment}.
+	 * Constructor that can be used to define a {@code KeycloakConfigResolver}
+	 * that will be used at initialization to provide the
+	 * {@code KeycloakDeployment}.
 	 * 
 	 * @param definedconfigResolver
 	 *            the resolver
@@ -109,30 +109,23 @@ public class MyKeycloakOIDCFilter implements Filter {
 			skipPattern = Pattern.compile(skipPatternDefinition, Pattern.DOTALL);
 		}
 
-		if (definedconfigResolver != null) {
-			deploymentContext = new AdapterDeploymentContext(definedconfigResolver);
-			log.log(Level.INFO, "Using {0} to resolve Keycloak configuration on a per-request basis.",
-					definedconfigResolver.getClass());
-		} else {
+		InputStream is = null;
 
-			InputStream is = null;
-
-			String confFile = System.getProperty(CONFIG_FILE_PARAM);
-			if (confFile == null) {
-				confFile = "/config/keycloak.json";
-			}
-			
-			try {
-				is = new FileInputStream(confFile);
-			} catch (FileNotFoundException e) {
-				throw new RuntimeException(e);
-			}
-
-			KeycloakDeployment kd = createKeycloakDeploymentFrom(is);
-			deploymentContext = new AdapterDeploymentContext(kd);
-			log.fine("Keycloak is using a per-deployment configuration.");
-
+		String confFile = System.getProperty(CONFIG_FILE_PARAM);
+		if (confFile == null) {
+			confFile = "/config/keycloak.json";
 		}
+
+		try {
+			is = new FileInputStream(confFile);
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+
+		KeycloakDeployment kd = createKeycloakDeploymentFrom(is);
+		deploymentContext = new AdapterDeploymentContext(kd);
+		log.fine("Keycloak is using a per-deployment configuration.");
+
 		filterConfig.getServletContext().setAttribute(AdapterDeploymentContext.class.getName(), deploymentContext);
 		nodesRegistrationManagement = new NodesRegistrationManagement();
 	}
@@ -154,23 +147,22 @@ public class MyKeycloakOIDCFilter implements Filter {
 
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) res;
-		
+
 		if (shouldSkip(request)) {
-			
+
 			chain.doFilter(req, res);
 			return;
 		}
 
 		OIDCServletHttpFacade facade = new OIDCServletHttpFacade(request, response);
-			 
+
 		KeycloakDeployment deployment = deploymentContext.resolveDeployment(facade);
 		if (deployment == null || !deployment.isConfigured()) {
 			response.sendError(403);
 			log.fine("deployment not configured");
 			return;
 		}
-		
-	
+
 		PreAuthActionsHandler preActions = new PreAuthActionsHandler(new UserSessionManagement() {
 			@Override
 			public void logoutAll() {
@@ -192,7 +184,8 @@ public class MyKeycloakOIDCFilter implements Filter {
 		}, deploymentContext, facade);
 
 		if (preActions.handleRequest()) {
-			// System.err.println("**************** preActions.handleRequest happened!");
+			// System.err.println("**************** preActions.handleRequest
+			// happened!");
 			return;
 		}
 
@@ -204,7 +197,6 @@ public class MyKeycloakOIDCFilter implements Filter {
 				(AdapterTokenStore) tokenStore, facade, request, 8443);
 		AuthOutcome outcome = authenticator.authenticate();
 
-
 		if (outcome == AuthOutcome.AUTHENTICATED) {
 			log.fine("AUTHENTICATED");
 			if (facade.isEnded()) {
@@ -214,7 +206,7 @@ public class MyKeycloakOIDCFilter implements Filter {
 			if (actions.handledRequest()) {
 				return;
 			} else {
-				AccessToken at=facade.getSecurityContext().getToken();
+				AccessToken at = facade.getSecurityContext().getToken();
 				HttpServletRequestWrapper wrapper = tokenStore.buildWrapper();
 				chain.doFilter(wrapper, res);
 				return;
@@ -233,12 +225,12 @@ public class MyKeycloakOIDCFilter implements Filter {
 	/**
 	 * Decides whether this {@link Filter} should skip the given
 	 * {@link HttpServletRequest} based on the configured
-	 * {@link MyKeycloakOIDCFilter#skipPattern}. Patterns are matched against the
-	 * {@link HttpServletRequest#getRequestURI() requestURI} of a request without
-	 * the context-path. A request for {@code /myapp/index.html} would be tested
-	 * with {@code /index.html} against the skip pattern. Skipped requests will not
-	 * be processed further by {@link MyKeycloakOIDCFilter} and immediately
-	 * delegated to the {@link FilterChain}.
+	 * {@link MyKeycloakOIDCFilter#skipPattern}. Patterns are matched against
+	 * the {@link HttpServletRequest#getRequestURI() requestURI} of a request
+	 * without the context-path. A request for {@code /myapp/index.html} would
+	 * be tested with {@code /index.html} against the skip pattern. Skipped
+	 * requests will not be processed further by {@link MyKeycloakOIDCFilter}
+	 * and immediately delegated to the {@link FilterChain}.
 	 *
 	 * @param request
 	 *            the request to check
