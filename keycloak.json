@@ -1,6 +1,6 @@
 {
   "realm": "CSCloud",
-  "auth-server-url": "http://keycloak/auth",
+  "auth-server-url": "http://keycloak.sso/auth",
   "ssl-required": "external",
   "resource": "sso.client.test",
   "credentials": {
