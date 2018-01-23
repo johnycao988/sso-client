@@ -1,12 +1,12 @@
 package com.cs.auth.adapter.keycloak; 
  
-import com.cly.comm.util.JSONUtil; 
-import com.cs.auth.base.Token;
+import com.cly.auth.base.AccessToken;
+import com.cly.comm.util.JSONUtil;
 
 import net.sf.json.JSONObject;
  
 
-public class KeycloakToken extends Token {
+public class KeycloakToken extends AccessToken {
 
 	protected KeycloakToken(String jsonToken) {
 		super(jsonToken); 

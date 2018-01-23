@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.cs.sso;
+package com.cs.auth.adapter.keycloak;
 
 import org.keycloak.adapters.AdapterDeploymentContext;
 import org.keycloak.adapters.AdapterTokenStore;
@@ -55,15 +55,10 @@ import org.keycloak.adapters.servlet.OIDCServletHttpFacade;
 import org.keycloak.adapters.servlet.FilterRequestAuthenticator;
 import org.keycloak.adapters.servlet.OIDCFilterSessionStore;
 
-/**
- * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
- * @version $Revision: 1 $
- */
-@Order(1)
-@WebFilter(filterName = "testFilter1", urlPatterns = "/*")
-public class MyKeycloakOIDCFilter implements Filter {
+ 
+public class KeycloakOIDCFilter implements Filter {
 
-	private final static Logger log = Logger.getLogger("" + MyKeycloakOIDCFilter.class);
+	private final static Logger log = Logger.getLogger("" + KeycloakOIDCFilter.class);
 
 	public static final String SKIP_PATTERN_PARAM = "keycloak.config.skipPattern";
 
@@ -91,11 +86,11 @@ public class MyKeycloakOIDCFilter implements Filter {
 	 * @param definedconfigResolver
 	 *            the resolver
 	 */
-	public MyKeycloakOIDCFilter(KeycloakConfigResolver definedconfigResolver) {
+	public KeycloakOIDCFilter(KeycloakConfigResolver definedconfigResolver) {
 		this.definedconfigResolver = definedconfigResolver;
 	}
 
-	public MyKeycloakOIDCFilter() {
+	public KeycloakOIDCFilter() {
 		this(null);
 	}
 
@@ -195,6 +190,7 @@ public class MyKeycloakOIDCFilter implements Filter {
 
 		FilterRequestAuthenticator authenticator = new FilterRequestAuthenticator(deployment,
 				(AdapterTokenStore) tokenStore, facade, request, 8443);
+		
 		AuthOutcome outcome = authenticator.authenticate();
 
 		if (outcome == AuthOutcome.AUTHENTICATED) {
@@ -225,11 +221,11 @@ public class MyKeycloakOIDCFilter implements Filter {
 	/**
 	 * Decides whether this {@link Filter} should skip the given
 	 * {@link HttpServletRequest} based on the configured
-	 * {@link MyKeycloakOIDCFilter#skipPattern}. Patterns are matched against
+	 * {@link KeycloakOIDCFilter#skipPattern}. Patterns are matched against
 	 * the {@link HttpServletRequest#getRequestURI() requestURI} of a request
 	 * without the context-path. A request for {@code /myapp/index.html} would
 	 * be tested with {@code /index.html} against the skip pattern. Skipped
-	 * requests will not be processed further by {@link MyKeycloakOIDCFilter}
+	 * requests will not be processed further by {@link KeycloakOIDCFilter}
 	 * and immediately delegated to the {@link FilterChain}.
 	 *
 	 * @param request

@@ -1,4 +1,4 @@
-package com.cs.auth.base;
+package com.cs.auth.adapter.keycloak;
 
 import java.io.IOException;
 import java.util.Enumeration;
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.core.annotation.Order;
 
-import com.cs.auth.base.AuthMgr;
+import com.cly.auth.base.AuthMgr;
 
 @Order(1)
 @WebFilter(filterName = "testFilter1", urlPatterns = "/*")
@@ -49,7 +49,7 @@ public class SSOFilter implements Filter {
 
 		// AuthMgr.getServletFilter().doFilter(req, res, chain);
 
-		AuthMgr.getServletFilter(req, res).doFilter(req, res, chain);
+		AuthMgr.getAuthServletFilter().doFilter(req, res, chain);
 
 	}
 

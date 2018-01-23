@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cs.auth.base.AuthException;
-import com.cs.auth.base.AuthLogger;
-import com.cs.auth.base.AuthMgr;
-import com.cs.auth.base.AuthSession;
+import com.cly.auth.base.AuthException;
+import com.cly.auth.base.AuthLogger;
+import com.cly.auth.base.AuthMgr;
+import com.cly.auth.base.AuthSession;
 
  
 

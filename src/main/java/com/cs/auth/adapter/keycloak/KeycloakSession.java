@@ -4,14 +4,13 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 
+import com.cly.auth.base.AuthException;
+import com.cly.auth.base.AuthLogger;
+import com.cly.auth.base.AuthSession;
+import com.cly.auth.base.AccessToken;
 import com.cly.comm.client.http.HttpClient;
 import com.cly.comm.client.http.HttpRequestParam;
 import com.cly.comm.util.IDUtil;
-
-import com.cs.auth.base.AuthException;
-import com.cs.auth.base.AuthLogger;
-import com.cs.auth.base.AuthSession;
-import com.cs.auth.base.Token;
 
 public class KeycloakSession extends AuthSession {
 
@@ -21,13 +20,13 @@ public class KeycloakSession extends AuthSession {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public Token getUserAuthencatedToken() throws AuthException {
+	public AccessToken getUserAuthencatedToken() throws AuthException {
 
 		String code = req.getParameter(KeycloakConst.CODE);
 
 		String sessionState = req.getParameter(KeycloakConst.SESSION_STATE);
 
-		Token uaToken = null;
+		AccessToken uaToken = null;
 
 		if (code != null && sessionState != null) {
 
@@ -65,7 +64,7 @@ public class KeycloakSession extends AuthSession {
 		return IDUtil.Base64Encode(this.authProp.getClientId() + ":" + this.authProp.getClientSecret());
 	}
 
-	private Token codeToUserAuthentcatedToken(String code, String sessionState) throws AuthException {
+	private AccessToken codeToUserAuthentcatedToken(String code, String sessionState) throws AuthException {
 
 		try {
 
@@ -111,11 +110,11 @@ public class KeycloakSession extends AuthSession {
 	}
 
 	@Override
-	public Token getClientPermissionToken() throws AuthException {
+	public AccessToken getClientPermissionToken() throws AuthException {
 
 		try {
 
-			Token clientPermToken = this.authProp.getClientPermissionToken();
+			AccessToken clientPermToken = this.authProp.getClientPermissionToken();
 
 			if (clientPermToken != null) {
 				if (!clientPermToken.isExpired())
@@ -150,7 +149,7 @@ public class KeycloakSession extends AuthSession {
 	}
 
 	@Override
-	public Token refreshToken(Token token) throws AuthException {
+	public AccessToken refreshToken(AccessToken token) throws AuthException {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -1,35 +1,23 @@
-client:
-  redirect.root.url: http://localhost:3000
 session.cache:
-  type: redis
-  server:
-    redis:
-      url: 192.168.3.103
-      port: 6379
-      authPassword: redis  
+   type: redis
+   server:
+     url: 192.168.3.103
+     port: 6379
+     authPassword: redis  
 auth:
-  - server:
-      id: SSO-CS-CLOUD-DEV
-      name: "SSO CS Cloud Server"  
-      root.url: http://sso.cscloud.com
-      auth.uri: /auth/realms/CSCloud/protocol/openid-connect/auth
-      token.uri: /auth/realms/CSCloud/protocol/openid-connect/token
-    client:
-      id: sso.client.dev
+  config:
+    realm: CSCloud
+    auth-server-url:  "http://192.168.3.103:30008/auth" 
+    ssl-required: external
+    resource: sso.client.dev
+    credentials:
       secret: a7012ff7-9d4f-4dcb-8c4f-63f0261e0883
-    default: true
-    servlet.filter.class: com.cs.auth.adapter.keycloak.KeycloakServletFilter
-
-  - server:
-      id: SSO-CS-CLOUD-TEST
-      name: "SSO CS Cloud Server"  
-      root.url: http://sso.cscloud.com
-      auth.uri: /auth/realms/CSCloud/protocol/openid-connect/auth
-      token.uri: /auth/realms/CSCloud/protocol/openid-connect/token
-    client:
-      id: sso.client.test
-      secret: 67e1d85f-1f6d-4909-af2c-52b4e7664562
-    default: false
-    servlet.filter.class: com.cs.auth.adapter.keycloak.KeycloakServletFilter    
+    confidential-port:
+    policy-enforcer:
+  servlet:
+    filter。class: com.cly.auth.servlet.filter.keycloak.KeycloakOIDCFilter
+ 
+      
+  
 
  
