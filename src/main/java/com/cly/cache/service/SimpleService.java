@@ -65,7 +65,7 @@ public class SimpleService implements CacheService {
 	}
 
 	@Override
-	public void shutdown() {
+	public void close() {
 
 		timer.cancel();
 

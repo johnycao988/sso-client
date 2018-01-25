@@ -9,7 +9,9 @@ auth:
     realm: CSCloud
     auth-server-url:  "http://192.168.3.103:30008/auth" 
     ssl-required: external
-    resource: sso.client.dev
+    resource: 
+      name: sso.client.dev
+      redirectRootUrl: http://localhost:3000
     credentials:
       secret: a7012ff7-9d4f-4dcb-8c4f-63f0261e0883
     confidential-port:

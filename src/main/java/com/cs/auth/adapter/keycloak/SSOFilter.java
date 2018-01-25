@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.core.annotation.Order;
 
 import com.cly.auth.base.AuthMgr;
+import com.cly.cache.CacheManager;
 
 @Order(1)
 @WebFilter(filterName = "testFilter1", urlPatterns = "/*")
@@ -27,6 +28,8 @@ public class SSOFilter implements Filter {
 	public void destroy() {
 
 		AuthMgr.destroy();
+		
+		CacheManager.shutdown();
 
 	}
 

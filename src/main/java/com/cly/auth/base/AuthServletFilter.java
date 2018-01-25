@@ -10,13 +10,13 @@ public abstract class AuthServletFilter implements Filter {
 
 	}
 
-	public void setAuthProperties(AuthEnv authEnv) {
+	public void setAuthEnv(AuthEnv authEnv) {
 
 		this.authEnv = authEnv;
 
 	}
 
-	public AuthEnv setAuthProperties() {
+	public AuthEnv getAuthEnv() {
 
 		return this.authEnv;
 

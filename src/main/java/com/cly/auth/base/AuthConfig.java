@@ -28,14 +28,14 @@ public class AuthConfig {
 
 			String filterClass = ypr.getStringValue("auth.servlet.filter。class");
 
-			AuthServletFilter asf = (AuthServletFilter) this.createInstance(filterClass);
+			authServletFilter = (AuthServletFilter) this.createInstance(filterClass);
 
-			AuthEnv ap = (AuthEnv) this.createInstance(asf.getAuthEnvClass().getName());
+			AuthEnv authEnv = (AuthEnv) this.createInstance(authServletFilter.getAuthEnvClass().getName());
 
-			ap.init(ypr);
+			authEnv.init(ypr);
 
-			asf.setAuthProperties(ap);
-			asf.init(filterConfig);
+			authServletFilter.setAuthEnv(authEnv);
+			authServletFilter.init(filterConfig);
 
 		} catch (Exception e) {
 			AuthLogger.error(e);
@@ -49,7 +49,7 @@ public class AuthConfig {
 
 		if (cacheType != null && cacheType.equalsIgnoreCase("redis")) {
 
-			String rd = "session.cache.server.redis.";
+			String rd = "session.cache.server.";
 
 			String redisServerUrl = ypr.getStringValue(rd + "url");
 			int redisServerPort = ypr.getIntegerValue(rd + "port", -1);

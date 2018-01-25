@@ -1,5 +1,6 @@
 package com.cly.comm.util;
 
+import java.io.IOException;
 import java.util.UUID;
 
 import net.iharder.Base64;
@@ -25,5 +26,11 @@ public class IDUtil {
 
 	 	return Base64.encodeBytes(code.getBytes()).toString();
 	}
+	
+	public static String Base64Decode(String code) throws IOException {
+
+	 	return new String(Base64.decode(code));
+	}
+
 
 }

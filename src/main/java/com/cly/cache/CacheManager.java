@@ -29,7 +29,7 @@ public class CacheManager {
 
 				CacheService cs = e.getValue();
 
-				cs.shutdown();
+				cs.close();
 
 			}
 

@@ -46,8 +46,8 @@ public class RedisService implements CacheService{
  
 
 	@Override
-	public void shutdown() { 
-		jedis.shutdown();
+	public void close() {  
+		jedis.close();
 	}
 	
 

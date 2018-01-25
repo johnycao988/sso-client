@@ -55,7 +55,8 @@ import org.keycloak.adapters.servlet.OIDCServletHttpFacade;
 import org.keycloak.adapters.servlet.FilterRequestAuthenticator;
 import org.keycloak.adapters.servlet.OIDCFilterSessionStore;
 
- 
+@Order(1)
+@WebFilter(filterName = "testFilter1", urlPatterns = "/*") 
 public class KeycloakOIDCFilter implements Filter {
 
 	private final static Logger log = Logger.getLogger("" + KeycloakOIDCFilter.class);

@@ -11,7 +11,7 @@ public interface CacheService {
 	
 	public void remove(String key); 
 	
-	public void shutdown();	
+	public void close();	
 	
 
 }
