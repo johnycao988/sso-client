@@ -52,7 +52,9 @@ public class SSOFilter implements Filter {
 
 		// AuthMgr.getServletFilter().doFilter(req, res, chain);
 
-		AuthMgr.getAuthServletFilter().doFilter(req, res, chain);
+	//	AuthMgr.getAuthServletFilter().doFilter(req, res, chain);
+		
+		chain.doFilter(request, response);
 
 	}
 

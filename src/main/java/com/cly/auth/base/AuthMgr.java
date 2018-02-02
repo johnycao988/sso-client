@@ -1,5 +1,10 @@
 package com.cly.auth.base;
 
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 
@@ -18,6 +23,26 @@ public class AuthMgr {
 
 		try {
 
+			Map<String,String> m=System.getenv();
+			
+			Iterator<Entry<String,String>> itt=m.entrySet().iterator();
+			
+			while(itt.hasNext()){
+				
+				Entry<String,String> e=itt.next();
+				System.out.println("System Env Key:"+e.getKey()+" Value:"+e.getValue());
+			}
+			
+			
+			Iterator<Entry<Object,Object>> it=System.getProperties().entrySet().iterator();
+			
+			while(it.hasNext()){
+				
+				Entry<Object,Object> e=it.next();
+				System.out.println("JVM env Key:"+e.getKey()+" Value:"+e.getValue());
+			}
+			
+			
 			String confFile = System.getProperty("AUTH_CONFIG_FILE");
 
 			if (confFile == null) {

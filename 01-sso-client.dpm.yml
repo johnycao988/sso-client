@@ -31,6 +31,11 @@ spec:
             - mountPath: "/config/keycloak.json"
               name: "config"
               subPath: "keycloak.json"
+          env:
+            - name: TEST.ENV0
+              value: TEST.JAVA_INPUT
+            - name: TEST.ENV1
+              value: TEST.ENV_INPUT  
   
           ports:
             - containerPort: 3000 
