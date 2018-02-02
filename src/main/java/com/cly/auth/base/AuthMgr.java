@@ -21,27 +21,8 @@ public class AuthMgr {
 
 	public static void init(FilterConfig filterConfig) throws ServletException {
 
-		try {
-
-			Map<String,String> m=System.getenv();
-			
-			Iterator<Entry<String,String>> itt=m.entrySet().iterator();
-			
-			while(itt.hasNext()){
-				
-				Entry<String,String> e=itt.next();
-				System.out.println("System Env Key:"+e.getKey()+" Value:"+e.getValue());
-			}
-			
-			
-			Iterator<Entry<Object,Object>> it=System.getProperties().entrySet().iterator();
-			
-			while(it.hasNext()){
-				
-				Entry<Object,Object> e=it.next();
-				System.out.println("JVM env Key:"+e.getKey()+" Value:"+e.getValue());
-			}
-			
+		try {  
+		 
 			
 			String confFile = System.getProperty("AUTH_CONFIG_FILE");
 

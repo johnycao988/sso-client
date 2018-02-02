@@ -18,7 +18,7 @@ spec:
     spec:
       hostNetwork: false
       nodeSelector:
-        nodeRole: data
+        nodeRole: ms
       volumes:
         - name: config
           configMap:
