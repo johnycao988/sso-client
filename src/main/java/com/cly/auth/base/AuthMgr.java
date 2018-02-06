@@ -21,9 +21,16 @@ public class AuthMgr {
 
 	public static void init(FilterConfig filterConfig) throws ServletException {
 
-		try {  
-		 
-			
+		try {
+
+			Iterator<Entry<Object, Object>> it = (Iterator<Entry<Object, Object>>) System.getProperties().entrySet();
+
+			while (it.hasNext()) {
+
+				Entry<Object, Object> e = it.next();
+				System.out.println("Env Key:" + e.getKey() + " Value:" + e.getValue());
+			}
+
 			String confFile = System.getProperty("AUTH_CONFIG_FILE");
 
 			if (confFile == null) {
@@ -51,7 +58,5 @@ public class AuthMgr {
 		}
 
 	}
-	
-
 
 }
