@@ -22,8 +22,10 @@ public class AuthMgr {
 	public static void init(FilterConfig filterConfig) throws ServletException {
 
 		try {
+			
+			
 
-			Iterator<Entry<Object, Object>> it = (Iterator<Entry<Object, Object>>) System.getProperties().entrySet();
+			Iterator<Entry<Object, Object>> it = System.getProperties().entrySet().iterator();
 
 			while (it.hasNext()) {
 
