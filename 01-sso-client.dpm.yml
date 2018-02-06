@@ -39,6 +39,9 @@ spec:
   
           ports:
             - containerPort: 3000 
+          args:
+            - --TEST_ARGS=TEST
+            - CONFIG_FILE="TEST_FILE"
 
 ---
 apiVersion: v1
